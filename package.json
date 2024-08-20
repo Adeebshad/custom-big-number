@@ -1,24 +1,19 @@
 {
-  "name": "@superset-ui/plugin-chart-custom-big-number",
-  "version": "0.18.25",
+  "name": "plugin-chart-custom-big-number",
+  "version": "1.0.1",
   "description": "Superset Chart - Echarts",
   "sideEffects": false,
-  "main": "lib/index.js",
-  "module": "esm/index.js",
-  "files": [
-    "esm",
-    "lib"
-  ],
+  "main": "src/index.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/apache/superset.git",
+    "url": "git+https://github.com/Adeebshad/custom-big-number",
     "directory": "superset-frontend/plugins/plugin-chart-custom-big-number"
   },
   "keywords": [
-    "superset"
+    "custom big numbert"
   ],
-  "author": "Superset",
-  "license": "Apache-2.0",
+  "author": "Anika Adeeb",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/apache/superset/issues"
   },
@@ -36,5 +31,16 @@
     "@superset-ui/chart-controls": "*",
     "@superset-ui/core": "*",
     "react": "^16.13.1"
+  },
+   "directories": {
+
+    "test": "test"
+
+  },
+
+  "scripts": {
+	"build": "webpack --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+
   }
 }
