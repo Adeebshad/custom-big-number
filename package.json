@@ -1,6 +1,6 @@
 {
   "name": "plugin-chart-custom-big-number",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Superset Chart - Echarts",
   "sideEffects": false,
   "main": "src/index.ts",
@@ -10,7 +10,7 @@
     "directory": "superset-frontend/plugins/plugin-chart-custom-big-number"
   },
   "keywords": [
-    "custom big numbert"
+    "custom big number"
   ],
   "author": "Anika Adeeb",
   "license": "ISC",

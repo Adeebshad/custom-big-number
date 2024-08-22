@@ -17,15 +17,10 @@ specific language governing permissions and limitations
 under the License.
 -->
 
-## @superset-ui/plugin-chart-echarts
+## @superset-ui/plugin-chart-custom-big-number
 
-[![Version](https://img.shields.io/npm/v/@superset-ui/plugin-chart-echarts.svg?style=flat-square)](https://www.npmjs.com/package/@superset-ui/plugin-chart-echarts)
-[![David (path)](https://img.shields.io/david/apache-superset/superset-ui.svg?path=packages%2Fsuperset-ui-plugin-chart-echarts&style=flat-square)](https://david-dm.org/apache-superset/superset-ui?path=packages/superset-ui-plugin-chart-echarts)
+This plugin provides Big Number viz plugins for Superset
 
-This plugin provides Echarts viz plugins for Superset:
-
-- Timeseries Chart (combined line, area bar with support for predictive analytics)
-- Pie Chart
 
 ### Usage
 
@@ -34,12 +29,12 @@ lookup this chart throughout the app.
 
 ```js
 import {
-  EchartsTimeseriesChartPlugin,
-  EchartsPieChartPlugin,
-} from '@superset-ui/plugin-chart-echarts';
+	BigNumberWithTrendlineChartPluginExtended, 
+	BigNumberTotalChartPluginExtended } 
+	from 'plugin-chart-custom-big-number';
 
-new EchartsTimeseriesChartPlugin().configure({ key: 'echarts-ts' }).register();
-new EchartsPieChartPlugin().configure({ key: 'echarts-pie' }).register();
+new BigNumberWithTrendlineChartPluginExtended().configure({key: 'big_number_extended'}).register();
+new BigNumberTotalChartPluginExtended().configure({key: 'big_number_total_extended'}),
 ```
 
 Then use it via `SuperChart`. See
