@@ -79,9 +79,9 @@ export type BigNumberVizProps = {
   kickerFontSize?: number;
   subheader: string;
   subheaderFontSize: number;
+  backgroundColor:string,
   textColor: string;
   subHeadTextColor:string;
-  backgroundColor: string;
   showTimestamp?: boolean;
   showTrendLine?: boolean;
   startYAxisAtZero?: boolean;
@@ -99,4 +99,6 @@ export type BigNumberVizProps = {
   formData?: BigNumberWithTrendlineFormData;
   refs: Refs;
   colorThresholdFormatters?: ColorFormatters;
+  bigNumberConfig: any;
+  maxChart: number;
 };

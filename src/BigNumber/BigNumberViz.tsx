@@ -31,7 +31,7 @@ import { BigNumberVizProps } from './types';
 import { EventHandlers } from '../types';
 
 const defaultNumberFormatter = getNumberFormatter();
-
+let lastclicked = 1;
 const PROPORTION = {
   // text size: proportion of the chart container sans trendline
   KICKER: 0.1,
@@ -43,6 +43,7 @@ const PROPORTION = {
   subheadtext: 'black',
   bgColor: 'white',
 };
+declare var $: any;
 
 class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
   static defaultProps = {
@@ -190,6 +191,63 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
     ); 
   }
 
+  renderCusHeader(maxHeight: number, index: number) {
+    const { bigNumber, headerFormatter, width, colorThresholdFormatters, bigNumberConfig } =
+      this.props;
+    // @ts-ignore
+    const text = bigNumberConfig[index].bigNumberText === null ? t('No data') : headerFormatter(bigNumberConfig[index].bigNumberText);
+
+    const hasThresholdColorFormatter =
+      Array.isArray(colorThresholdFormatters) &&
+      colorThresholdFormatters.length > 0;
+
+    let numberColor;
+    if (hasThresholdColorFormatter) {
+      colorThresholdFormatters!.forEach(formatter => {
+        const formatterResult = bigNumberConfig[index].bigNumberText
+          ? formatter.getColorFromValue(bigNumberConfig[index].bigNumberText as number)
+          : false;
+        if (formatterResult) {
+          numberColor = formatterResult;
+        }
+      });
+    } else {
+      numberColor = bigNumberConfig[index].textColour;
+    }
+
+    const container = this.createTemporaryContainer();
+    document.body.append(container);
+    const fontSize = computeMaxFontSize({
+      text,
+      maxWidth: width - 8, // Decrease 8px for more precise font size
+      maxHeight,
+      className: 'header-line',
+      container,
+    });
+    container.remove();
+
+    const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+      if (this.props.onContextMenu) {
+        e.preventDefault();
+        this.props.onContextMenu(e.nativeEvent.clientX, e.nativeEvent.clientY);
+      }
+    };
+
+    return (
+      <div
+        className="header-line"
+        style={{
+          fontSize,
+          height: maxHeight,
+          color: numberColor,
+        }}
+        onContextMenu={onContextMenu}
+      >
+        {text}
+      </div>
+    ); 
+  }
+
   renderSubheader(maxHeight: number) {
     const { bigNumber, subheader, width, bigNumberFallback, subHeadTextColor } = this.props;
     let fontSize = 0;
@@ -231,6 +289,85 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
     }
     return null;
   }
+
+  renderCusSubheader(maxHeight: number, idx: number) {
+    const { bigNumber, subheader, width, bigNumberFallback, subHeadTextColor, bigNumberConfig } = this.props;
+    let fontSize = 0;
+
+    const NO_DATA_OR_HASNT_LANDED = t(
+      'No data after filtering or data is NULL for the latest time record',
+    );
+    const NO_DATA = t(
+      'Try applying different filters or ensuring your datasource has data',
+    );
+    let text = subheader;
+    if (bigNumber === null) {
+      text = bigNumberFallback ? NO_DATA : NO_DATA_OR_HASNT_LANDED;
+    }
+
+    text = bigNumberConfig[idx].subHeader;
+
+    if (text) {
+      const container = this.createTemporaryContainer();
+      document.body.append(container);
+      fontSize = computeMaxFontSize({
+        text,
+        maxWidth: width,
+        maxHeight,
+        className: 'subheader-line',
+        container,
+      });
+      container.remove();
+
+      return (
+        <div
+          className="subheader-line"
+          style={{
+            fontSize,
+            height: maxHeight,
+            color:bigNumberConfig[idx].subHeaderTextColour,
+          }}
+        >
+          {text}
+        </div>
+      );
+    }
+    return null;
+  }
+
+  handleClick = (param:any) => (event) => { 
+    // Handle the click event and use the parameter
+    const { bigNumberConfig } = this.props;
+    console.log('Div clicked with parameter:', param);
+    
+    for (let i = 1; i <= bigNumberConfig.length + 1; i++) {
+      // Select for text input with aria-label="textX"
+      let subheaderTextSelector = 'input[aria-label="subHeader_' + i + '"]';
+      // Select for background color input with aria-label="background_color_X"
+      let bgColorSelector = 'input[aria-label="background_color_' + i + '"]';
+
+      let subHeaderColorSelector = 'input[aria-label="Sub_Header_Text_Color_' + i + '"]';
+      let headerColorSelector = 'input[aria-label="Text_Color_' + i + '"]';
+      let selectors =[subheaderTextSelector,bgColorSelector,subHeaderColorSelector,headerColorSelector]
+      // Handle the visibility of the text input
+      selectors.forEach((ele)=>{
+      document.querySelectorAll(ele).forEach((element) => {
+        const parentDiv = element.closest('div[data-test="control-item"]');
+        if (parentDiv) {
+          if (param + 1 === i) {
+            lastclicked = param + 1;
+            parentDiv.style.display = 'block';
+          } else {
+            parentDiv.style.display = 'none';
+          }
+        }
+      });
+    })
+
+    }
+};
+
+
 
   renderTrendline(maxHeight: number) {
     const { width, trendLineData, echartOptions, refs } = this.props;
@@ -285,9 +422,35 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
       kickerFontSize,
       headerFontSize,
       subheaderFontSize,
-      backgroundColor
+      backgroundColor,
+      bigNumberConfig,
+      maxChart
     } = this.props;
     const className = this.getClassName();
+
+    $(document).ready(function() {
+      for (let i = 1; i <= maxChart; i++) {
+     // Select for text input with aria-label="textX"
+     let subheaderTextSelector = 'input[aria-label="subHeader_' + i + '"]';
+     // Select for background color input with aria-label="background_color_X"
+     let bgColorSelector = 'input[aria-label="background_color_' + i + '"]';
+
+     let subHeaderColorSelector = 'input[aria-label="Sub_Header_Text_Color_' + i + '"]';
+     let headerColorSelector = 'input[aria-label="Text_Color_' + i + '"]';
+     let selectors =[subheaderTextSelector,bgColorSelector,subHeaderColorSelector,headerColorSelector]
+     // Handle the visibility of the text input
+     selectors.forEach((ele)=>{
+     document.querySelectorAll(ele).forEach((element) => {
+       const parentDiv = element.closest('div[data-test="control-item"]');
+          if (parentDiv) {
+            parentDiv.style.display = i === lastclicked ? 'block' : 'none';
+          }
+        });
+      })
+       
+      }
+    });
+    
 
     if (showTrendLine) {
       const chartHeight = Math.floor(PROPORTION.TRENDLINE * height);
@@ -317,11 +480,18 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
     }
 
     return (
-      <div className={className} style={{ height,backgroundColor: backgroundColor }}>
-        {this.renderFallbackWarning()}
-        {this.renderKicker((kickerFontSize || 0) * height)}
-        {this.renderHeader(Math.ceil(headerFontSize * height))}
-        {this.renderSubheader(Math.ceil(subheaderFontSize * height))}
+      <div style={{ height: height, overflow: 'auto', scrollbarGutter: 'stable' }}>
+      {bigNumberConfig.map((val: any, index: number) => (
+        <div 
+        className={className} 
+        style={{ height: height, backgroundColor: bigNumberConfig[index].backgoundColour }}
+        onClick={this.handleClick(index)}>
+          {this.renderFallbackWarning()}
+          {this.renderKicker((kickerFontSize || 0) * height)}
+          {this.renderCusHeader(Math.ceil(headerFontSize * height), index)}
+          {this.renderCusSubheader(Math.ceil(subheaderFontSize * height), index)}
+        </div>
+      ))}
       </div>
     );
   }

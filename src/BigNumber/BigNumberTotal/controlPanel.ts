@@ -25,32 +25,21 @@ import {
   getStandardizedControls,
 } from '@superset-ui/chart-controls';
 import { headerFontSize, subheaderFontSize, textColor, backgroundColor, subHeadTextColor } from '../sharedControls';
+import { backgroundColorControl, generateTextControls, subHeadTextColorControl } from './extendControlPanelSections';
 
 export default {
   controlPanelSections: [
     {
       label: t('Query'),
       expanded: true,
-      controlSetRows: [['metric'], ['adhoc_filters']],
+      controlSetRows: [['metrics'], ['adhoc_filters']],
     },
     {
       label: t('Display settings'),
       expanded: true,
       tabOverride: 'data',
       controlSetRows: [
-        [
-          {
-            name: 'subheader',
-            config: {
-              type: 'TextControl',
-              label: t('Subheader'),
-              renderTrigger: true,
-              description: t(
-                'Description text that shows up below your Big Number',
-              ),
-            },
-          },
-        ],
+        ...generateTextControls(10),
       ],
     },
     {
@@ -59,9 +48,6 @@ export default {
       controlSetRows: [
         [headerFontSize],
         [subheaderFontSize],
-        [textColor],
-        [backgroundColor],
-        [subHeadTextColor],
         ['y_axis_format'],
         ['currency_format'],
         [
@@ -133,6 +119,16 @@ export default {
         ],
       ],
     },
+    {
+      label: t('Chart Colour Options'),
+      expanded: true,
+      controlSetRows: [
+        ...backgroundColorControl(10),
+        ...subHeadTextColorControl('Text_Color_',10),
+        ...subHeadTextColorControl('Sub_Header_Text_Color_',10),
+        
+      ]
+    }
   ],
   controlOverrides: {
     y_axis_format: {
@@ -141,6 +137,6 @@ export default {
   },
   formDataOverrides: formData => ({
     ...formData,
-    metric: getStandardizedControls().shiftMetric(),
+    metrics: getStandardizedControls().shiftMetric(),
   }),
 } as ControlPanelConfig;
