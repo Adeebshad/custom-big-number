@@ -29,7 +29,7 @@ import { EchartsChartPlugin } from '../../types';
 const metadata = {
   category: t('KPI'),
   description: t(
-    'Showcases a single metric front-and-center. Big number is best used to call attention to a KPI or the one thing you want your audience to focus on.',
+    'Showcases a metric front-and-center. Big number is best used to call attention to a KPI or the one thing you want your audience to focus on. The Big Number Extended enhances this concept by allowing customization of background color, font color, subheader color, and subheader text. It also supports generating multiple big numbers, each representing different columns and metrics, providing a versatile and visually appealing way to present important data.',
   ),
   exampleGallery: [
     { url: example1, caption: t('A Big Number') },
