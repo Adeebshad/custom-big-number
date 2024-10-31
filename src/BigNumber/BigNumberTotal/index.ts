@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { t, Behavior } from '@superset-ui/core';
+import { t } from '@superset-ui/core';
 import controlPanel from './controlPanel';
 import transformProps from './transformProps';
 import buildQuery from './buildQuery';
@@ -46,7 +46,7 @@ const metadata = {
     t('Description'),
   ],
   thumbnail,
-  behaviors: [Behavior.DrillToDetail],
+ // behaviors: [Behavior.DrillToDetail],
 };
 
 export default class BigNumberTotalChartPluginExtended extends EchartsChartPlugin<

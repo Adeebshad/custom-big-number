@@ -45,7 +45,7 @@ const metadata = {
     t('Trend'),
   ],
   thumbnail,
-  behaviors: [Behavior.DrillToDetail],
+  behaviors: [Behavior.DRILL_TO_DETAIL],
 };
 
 export default class BigNumberWithTrendlineChartPluginExtended extends EchartsChartPlugin<

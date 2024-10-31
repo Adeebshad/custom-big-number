@@ -24,7 +24,7 @@ import {
   Dataset,
   getStandardizedControls,
 } from '@superset-ui/chart-controls';
-import { headerFontSize, subheaderFontSize, textColor, backgroundColor, subHeadTextColor } from '../sharedControls';
+import { headerFontSize, subheaderFontSize } from '../sharedControls';
 import { backgroundColorControl, generateTextControls, subHeadTextColorControl } from './extendControlPanelSections';
 
 export default {
@@ -102,7 +102,7 @@ export default {
                     ? colnames
                         .filter(
                           (colname: string, index: number) =>
-                            coltypes[index] === GenericDataType.Numeric,
+                            coltypes[index] === GenericDataType.NUMERIC,
                         )
                         .map(colname => ({
                           value: colname,

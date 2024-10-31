@@ -1,6 +1,6 @@
 {
   "name": "plugin-chart-custom-big-number",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "description": "Superset Chart - Echarts",
   "sideEffects": false,
   "main": "src/index.ts",

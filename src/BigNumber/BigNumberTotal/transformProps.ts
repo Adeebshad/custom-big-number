@@ -23,16 +23,15 @@ import {
 } from '@superset-ui/chart-controls';
 import {
   GenericDataType,
-  getMetricLabel,
   extractTimegrain,
   QueryFormData,
-  getValueFormatter, t,
+  getValueFormatter,
 } from '@superset-ui/core';
 import { BigNumberTotalChartProps, BigNumberVizProps } from '../types';
 import { getDateFormatter, parseMetricValue } from '../utils';
 import { Refs } from '../../types';
-import controlPanel from './controlPanel';
-const maxChart= 100;
+
+const maxChart= 20;
 export default function transformProps(
   chartProps: BigNumberTotalChartProps,
 ): BigNumberVizProps {
@@ -62,7 +61,6 @@ export default function transformProps(
   const refs: Refs = {};
   const { data = [], coltypes = [] } = queriesData[0];
   const granularity = extractTimegrain(rawFormData as QueryFormData);
-  const metricName = getMetricLabel(metric);
   const formattedSubheader = subheader;
   const bigNumber =
     data.length === 0 ? null : parseMetricValue(data[0][queriesData[0].colnames[0]]);
@@ -91,8 +89,8 @@ export default function transformProps(
   );
 
   const headerFormatter =
-    coltypes[0] === GenericDataType.Temporal ||
-    coltypes[0] === GenericDataType.String ||
+    coltypes[0] === GenericDataType.TEMPORAL ||
+    coltypes[0] === GenericDataType.STRING ||
     forceTimestampFormatting
       ? formatTime
       : numberFormatter;
