@@ -42,6 +42,7 @@ const PROPORTION = {
   text: 'black',
   subheadtext: 'black',
   bgColor: 'white',
+  testAlignment: 'flex-start'
 };
 
 class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
@@ -61,6 +62,7 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
     subHeadTextColor: PROPORTION.subheadtext,
     backgroundColor:PROPORTION.bgColor,
     timeRangeFixed: false,
+    testAlignment: PROPORTION.testAlignment
   };
 
   getClassName() {
@@ -72,7 +74,7 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
     return `${names} no-trendline`;
   }
 
-  componentDidMount() {
+  initialChartControllerAdd() {
     const { maxChart } = this.props;
     for (let i = 1; i <= maxChart; i++) {
       let subheaderTextSelector = 'input[aria-label="subHeader_' + i + '"]';
@@ -80,7 +82,7 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
       let subHeaderColorSelector = 'input[aria-label="Sub_Header_Text_Color_' + i + '"]';
       let headerColorSelector = 'input[aria-label="Text_Color_' + i + '"]';
       let selectors =[subheaderTextSelector,bgColorSelector,subHeaderColorSelector,headerColorSelector]
-      selectors.forEach((ele)=>{
+      selectors.forEach( (ele) => {
           if (lastclicked === i) {
             const element = document.querySelector(ele);
             const closestDiv = element?.closest('div.col-lg-12');
@@ -96,8 +98,8 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
               closestDiv.style.display = 'none';
             }
           }
-        })
-      }
+      })
+    } 
   }
 
   createTemporaryContainer() {
@@ -380,6 +382,7 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
             // @ts-ignore
             closestDiv.style.display = 'block';
           }
+          lastclicked = param + 1;
         } else {
           const element = document.querySelector(ele);
           const closestDiv = element?.closest('div.col-lg-12');
@@ -448,7 +451,8 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
       headerFontSize,
       subheaderFontSize,
       backgroundColor,
-      bigNumberConfig
+      bigNumberConfig,
+      textAlignment,
     } = this.props;
     const className = this.getClassName();
 
@@ -480,13 +484,19 @@ class BigNumberVis extends React.PureComponent<BigNumberVizProps> {
     }
 
     return (
-      <div style={{ height: height, overflow: 'auto' }}>
+      <div style={{ height: height, overflow: 'auto'}}>
       {bigNumberConfig.map((val: any, index: number) => (
         <div 
         className={className} 
-        style={{ height: height, backgroundColor: bigNumberConfig[index].backgoundColour }}
-        onClick={this.handleClick(index)}>
+        style={{ 
+          height: height,backgroundColor: bigNumberConfig[index].backgoundColour, 
+          display: 'flex',
+          alignItems: textAlignment,
+          justifyContent: 'center',
+          margin:'10px' }}     
+          onClick={this.handleClick(index)}> 
           {this.renderFallbackWarning()}
+          {this.initialChartControllerAdd()}
           {this.renderKicker((kickerFontSize || 0) * height)}
           {this.renderCusHeader(Math.ceil(headerFontSize * height), index)}
           {this.renderCusSubheader(Math.ceil(subheaderFontSize * height), index)}
@@ -504,7 +514,7 @@ export default styled(BigNumberVis)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    border-radius: ${theme.gridUnit * 2}px; 
 
     &.no-trendline .subheader-line {
       padding-bottom: 0.3em;
@@ -514,7 +524,7 @@ export default styled(BigNumberVis)`
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: flex-start;
+
       .alert {
         font-size: ${theme.typography.sizes.s};
         margin: -0.5em 0 0.4em;

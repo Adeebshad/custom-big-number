@@ -24,7 +24,7 @@ import {
   Dataset,
   getStandardizedControls,
 } from '@superset-ui/chart-controls';
-import { headerFontSize, subheaderFontSize } from '../sharedControls';
+import { headerFontSize, subheaderFontSize, textAlignment } from '../sharedControls';
 import { backgroundColorControl, generateTextControls, subHeadTextColorControl } from './extendControlPanelSections';
 
 export default {
@@ -39,8 +39,10 @@ export default {
       expanded: true,
       tabOverride: 'data',
       controlSetRows: [
+        
         ...generateTextControls(10),
       ],
+
     },
     {
       label: t('Chart Options'),
@@ -78,6 +80,7 @@ export default {
             },
           },
         ],
+        [textAlignment],
         [
           {
             name: 'conditional_formatting',

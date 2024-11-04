@@ -57,6 +57,7 @@ export default function transformProps(
     textColor,
     subHeadTextColor,
     backgroundColor,
+    textAlignment,
   } = formData;
   const refs: Refs = {};
   const { data = [], coltypes = [] } = queriesData[0];
@@ -113,6 +114,7 @@ export default function transformProps(
     textColor,
     subHeadTextColor,
     backgroundColor,
+    textAlignment,
     subheader: formattedSubheader,
     onContextMenu,
     refs,

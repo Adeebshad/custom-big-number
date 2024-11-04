@@ -213,3 +213,28 @@ export const backgroundColor: CustomControlItem = {
     ],
   },
 };
+
+export const textAlignment: CustomControlItem = {
+  name: 'text_alignment',
+  config: {
+    type: 'SelectControl',
+    label: t('text_alignmen'),
+    renderTrigger: true,
+    clearable: false,
+    default: 'flex-start',
+    options: [
+      {
+        label: t('Left'),
+        value: 'flex-start',
+      },
+      {
+        label: t('Center'),
+        value: 'center',
+      },
+      {
+        label: t('Right'),
+        value: 'flex-end',
+      },
+    ],
+  },
+};

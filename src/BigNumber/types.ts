@@ -80,6 +80,7 @@ export type BigNumberVizProps = {
   subheader: string;
   subheaderFontSize: number;
   backgroundColor:string,
+  textAlignment:string,
   textColor: string;
   subHeadTextColor:string;
   showTimestamp?: boolean;
